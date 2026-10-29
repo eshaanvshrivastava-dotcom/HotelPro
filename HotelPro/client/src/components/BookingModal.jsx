@@ -28,8 +28,8 @@ const BookingModal = ({ open, setOpen, room, initialFromDate, initialToDate, onB
   const [totalAmount, setTotalAmount] = useState(room?.rent || 0);
   const [loading, setLoading] = useState(false);
 
-  // Card details state
-  const [cardNumber, setCardNumber] = useState('4242 •••• •••• 4242');
+  // Card details state (Simulation Test Values)
+  const [cardNumber, setCardNumber] = useState('4242 4242 4242 4242');
   const [cardholderName, setCardholderName] = useState('');
   const [expMonthYear, setExpMonthYear] = useState('12/28');
   const [cvv, setCvv] = useState('123');
@@ -240,9 +240,16 @@ const BookingModal = ({ open, setOpen, room, initialFromDate, initialToDate, onB
               </div>
 
               {/* Payment Card Section */}
-              <h6 className="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
-                <MDBIcon fas icon="credit-card" className="text-success" /> Secure Online Payment
-              </h6>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                  <MDBIcon fas icon="credit-card" className="text-success" /> Payment Authorization
+                </h6>
+                <span className="badge bg-warning text-dark px-2 py-1">Demo Mode</span>
+              </div>
+              <div className="alert alert-info py-2 px-3 small mb-3 border-0 rounded-3 text-start">
+                <MDBIcon fas icon="info-circle" className="me-2" />
+                <strong>Portfolio Simulation:</strong> Pre-filled test credentials provided below. No real charges are made and real credit card details should not be entered.
+              </div>
               <div className="p-3 border rounded-3 bg-light">
                 <div className="row g-3">
                   <div className="col-md-6">

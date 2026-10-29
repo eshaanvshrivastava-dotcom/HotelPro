@@ -99,14 +99,19 @@ router.post('/bookroom', async (req, res) => {
 
     const savedBooking = await newBooking.save();
 
-    // Save CardDetails if provided
+    // Save sanitized demo payment record (no plaintext card/CVV storage)
     if (cardDetails && cardDetails.cardNumber) {
+      const rawCard = String(cardDetails.cardNumber).replace(/\s+/g, '');
+      const maskedCard = rawCard.length >= 4 
+        ? '•••• •••• •••• ' + rawCard.slice(-4) 
+        : '•••• •••• •••• 4242';
+
       const newCard = new CardDetails({
         booking_id: generatedBookingId,
         user_id: String(user_id),
-        cardNumber: cardDetails.cardNumber.replace(/\s+/g, ''),
-        cvvcode: cardDetails.cvvcode || '***',
-        expmonthyear: cardDetails.expmonthyear || '',
+        cardNumber: maskedCard,
+        cvvcode: '***', // CVV is never stored for security compliance
+        expmonthyear: cardDetails.expmonthyear || '12/28',
         cardholdername: cardDetails.cardholdername || name,
       });
       await newCard.save();

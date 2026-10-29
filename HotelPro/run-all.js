@@ -35,11 +35,18 @@ const startServices = async () => {
   if (!is8001Free) {
     console.warn('⚠️  Port 8001 is already in use by another process.');
     console.warn('👉 If another terminal or background process is running, close it or run:');
-    console.warn('   Stop-Process -Id (Get-NetTCPConnection -LocalPort 8001).OwningProcess -Force\n');
+    if (isWindows) {
+      console.warn('   Stop-Process -Id (Get-NetTCPConnection -LocalPort 8001).OwningProcess -Force\n');
+    } else {
+      console.warn('   lsof -ti :8001 | xargs kill -9\n');
+    }
   }
 
   if (!is5173Free) {
-    console.warn('⚠️  Port 5173 is already in use by another process.\n');
+    console.warn('⚠️  Port 5173 is already in use by another process.');
+    if (!isWindows) {
+      console.warn('   lsof -ti :5173 | xargs kill -9\n');
+    }
   }
 
   // Spawn without passing args array to shell:true to eliminate Node 24 DEP0190 warning
